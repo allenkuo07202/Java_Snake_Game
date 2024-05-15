@@ -8,9 +8,11 @@ public class Main extends JPanel {
     public static int row = height / CELLSIZE;
     public static int column = width / CELLSIZE;
     private Snake snake;
+    private Fruit fruit;
 
     public Main() {
         snake = new Snake();
+        fruit = new Fruit();
     }
 
     @Override
@@ -18,6 +20,7 @@ public class Main extends JPanel {
         // draw a black background
         g.fillRect(0, 0, width, height);
         snake.drawSnake(g);
+        fruit.drawFruit(g);
     }
 
     @Override
