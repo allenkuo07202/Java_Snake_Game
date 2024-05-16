@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Main extends JPanel {
     public static final int CELLSIZE = 20;
@@ -9,10 +11,21 @@ public class Main extends JPanel {
     public static int column = width / CELLSIZE;
     private Snake snake;
     private Fruit fruit;
+    private Timer t;
+    private int speed = 100;
+    private static String direction;
 
     public Main() {
         snake = new Snake();
         fruit = new Fruit();
+        t = new Timer();
+        t.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                repaint();
+            }
+        }, 0, speed);
+        direction = "Right";
     }
 
     @Override
@@ -21,6 +34,24 @@ public class Main extends JPanel {
         g.fillRect(0, 0, width, height);
         snake.drawSnake(g);
         fruit.drawFruit(g);
+
+        // remove snake tail and put it in head
+        int snakeX = snake.getSnakeBody().get(0).x;
+        int snakeY = snake.getSnakeBody().get(0).y;
+        if (direction.equals("Left")) {
+            snakeX -= CELLSIZE;
+        } else if (direction.equals("Up")) {
+            snakeY -= CELLSIZE;
+        } else if (direction.equals("Right")) {
+            snakeX += CELLSIZE;
+        } else if (direction.equals("Down")) {
+            snakeY += CELLSIZE;
+        }
+        Node newHead = new Node(snakeX, snakeY);
+        snake.getSnakeBody().remove(snake.getSnakeBody().size() - 1);
+        snake.getSnakeBody().add(0, newHead);
+
+
     }
 
     @Override

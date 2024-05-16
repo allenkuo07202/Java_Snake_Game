@@ -13,6 +13,10 @@ public class Snake {
 
     }
 
+    public ArrayList<Node> getSnakeBody(){
+        return this.snakeBody;
+    }
+
     public void drawSnake(Graphics g) {
         g.setColor(Color.ORANGE);
         for (Node n : snakeBody) {
