@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -17,10 +18,14 @@ public class Main extends JPanel implements KeyListener {
     private int speed = 100;
     private static String direction;
     private boolean allowKeyPress;
+    private int score;
 
     public Main() {
-        snake = new Snake();
-        fruit = new Fruit();
+        reset();
+        addKeyListener(this);
+    }
+
+    private void setTimer(){
         t = new Timer();
         t.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -28,13 +33,44 @@ public class Main extends JPanel implements KeyListener {
                 repaint();
             }
         }, 0, speed);
+    }
+
+    private void reset(){
+        score = 0;
+        if(snake!=null){
+            snake.getSnakeBody().clear();
+        }
+        allowKeyPress=true;
         direction = "Right";
-        addKeyListener(this);
-        allowKeyPress = true;
+        snake = new Snake();
+        fruit = new Fruit();
+        setTimer();
     }
 
     @Override
     public void paintComponent(Graphics g) {
+        // check if the snake bites itself
+        ArrayList<Node> snake_body = snake.getSnakeBody();
+        Node head = snake_body.get(0);
+        for(int i=1;i<snake_body.size();i++){
+            if(snake_body.get(i).x==head.x&&snake_body.get(i).y==head.y){
+                allowKeyPress=false;
+                t.cancel();
+                t.purge();
+                int response = JOptionPane.showOptionDialog(this, "Game Over!!Would you like to start over?","Game Over",JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE,null,null,JOptionPane.YES_OPTION);
+                switch (response){
+                    case JOptionPane.CLOSED_OPTION:
+                        System.exit(0);
+                        break;
+                    case JOptionPane.NO_OPTION:
+                        System.exit(0);
+                        break;
+                    case JOptionPane.YES_OPTION:
+                        reset();
+                        return;
+                }
+            }
+        }
         // draw a black background
         g.fillRect(0, 0, width, height);
         fruit.drawFruit(g);
