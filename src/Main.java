@@ -6,11 +6,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Main extends JPanel implements KeyListener {
-    public static final int CELLSIZE = 20;
-    private static int width = 400;
-    private static int height = 400;
-    public static int row = height / CELLSIZE;
-    public static int column = width / CELLSIZE;
+    public static final int CELL_SIZE = 20;
+    public static int width = 400;
+    public static int height = 400;
+    public static int row = height / CELL_SIZE;
+    public static int column = width / CELL_SIZE;
     private Snake snake;
     private Fruit fruit;
     private Timer t;
@@ -44,13 +44,13 @@ public class Main extends JPanel implements KeyListener {
         int snakeX = snake.getSnakeBody().get(0).x;
         int snakeY = snake.getSnakeBody().get(0).y;
         if (direction.equals("Left")) {
-            snakeX -= CELLSIZE;
+            snakeX -= CELL_SIZE;
         } else if (direction.equals("Up")) {
-            snakeY -= CELLSIZE;
+            snakeY -= CELL_SIZE;
         } else if (direction.equals("Right")) {
-            snakeX += CELLSIZE;
+            snakeX += CELL_SIZE;
         } else if (direction.equals("Down")) {
-            snakeY += CELLSIZE;
+            snakeY += CELL_SIZE;
         }
         Node newHead = new Node(snakeX, snakeY);
         snake.getSnakeBody().remove(snake.getSnakeBody().size() - 1);
