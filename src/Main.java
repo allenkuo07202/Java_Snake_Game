@@ -25,6 +25,10 @@ public class Main extends JPanel implements KeyListener {
     private boolean allowKeyPress;
     private int score;
     private int highest_score;
+    // 由於遊戲中會生成filename.txt，所以要壓成.jar檔之前，要先把filename.txt的生成路徑設定好
+    // 一般是放在system的深處，這裡為了簡化，就放在桌面
+    String desktop = System.getProperty("user.home") + "/Desktop/";
+    String myFile = desktop + "filename.txt";
 
     public Main() {
         read_highest_score();
@@ -162,7 +166,7 @@ public class Main extends JPanel implements KeyListener {
 
     public void read_highest_score() {
         try {
-            File myObj = new File("filename.txt");
+            File myObj = new File(myFile);
             Scanner myReader = new Scanner(myObj);
             highest_score = myReader.nextInt();
             myReader.close();
@@ -170,7 +174,7 @@ public class Main extends JPanel implements KeyListener {
         } catch (FileNotFoundException e) {
             highest_score = 0;
             try {
-                File myObj = new File("filename.txt");
+                File myObj = new File(myFile);
                 if (myObj.createNewFile()) {
                     System.out.println("File created: " + myObj.getName());
                 }
@@ -185,7 +189,7 @@ public class Main extends JPanel implements KeyListener {
 
     public void write_a_file(int score) {
         try {
-            FileWriter myWriter = new FileWriter("filename.txt");
+            FileWriter myWriter = new FileWriter(myFile);
             if (score > highest_score) {
                 myWriter.write("" + score);
                 highest_score = score;
